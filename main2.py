@@ -1,7 +1,13 @@
-from flask import Flask, request, jsonify
-import tiktokvoice
-
+import os
+import urllib.request
+   # from app import app
+from flask import Flask, request, redirect, jsonify
+from werkzeug.utils import secure_filename
+from flask_cors import CORS, cross_origin
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+import tiktokvoice
 
 @app.route('/tts', methods=['POST'])
 def tts():
