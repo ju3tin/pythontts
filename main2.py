@@ -9,6 +9,10 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 import tiktokvoice
 
+output_dir = 'output'
+os.makedirs(output_dir, exist_ok=True)
+
+
 @app.route('/tts', methods=['POST'])
 def tts():
     data = request.json
@@ -23,8 +27,9 @@ def tts():
         return jsonify({"error": "Voice selection is required"}), 400
 
     # Execute TTS
-    tiktokvoice.tts(text, voice, filename, play)
-    return jsonify({"message": "TTS generated successfully", "filename": filename}), 200
+    output_file_path = os.path.join(output_dir, filename)
+    tiktokvoice.tts(text, voice, output_file_path, play)
+    return jsonify({"message": "TTS generated successfully", "filename": output_file_path}), 200
 @app.route('/ready', methods=['GET'])
 def ready():
     return jsonify({"message": "api ready"}), 200
