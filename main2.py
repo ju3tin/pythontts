@@ -39,5 +39,22 @@ def get_file(filename):
         return send_from_directory(output_dir, filename, as_attachment=True)
     except FileNotFoundError:
         return jsonify({"error": "File not found"}), 404
+@app.route('/getfile/<filename>', methods=['GET'])
+def get_file(filename):
+    try:
+        return send_from_directory(output_dir, filename, as_attachment=False)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+@app.route('/deletefile/<filename>', methods=['DELETE'])
+def delete_file(filename):
+    file_path = os.path.join(output_dir, filename)
+    try:
+        os.remove(file_path)
+        return jsonify({"message": f"File '{filename}' deleted successfully."}), 200
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == "__main__":
     app.run(debug=True)
