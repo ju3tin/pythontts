@@ -42,7 +42,7 @@ def get_file(filename):
 @app.route('/getfile/<filename>', methods=['GET'])
 def getfile(filename):
     try:
-        return send_from_directory(output_dir, filename, as_attachment=True)
+        return send_from_directory(output_dir, filename, as_attachment=False)
     except FileNotFoundError:
         return jsonify({"error": "File not found"}), 404
 
