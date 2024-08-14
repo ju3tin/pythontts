@@ -33,13 +33,19 @@ def tts():
 @app.route('/ready', methods=['GET'])
 def ready():
     return jsonify({"message": "api ready"}), 200
-@app.route('/get-file/<filename>', methods=['GET'])
+@app.route('/get-file2/<filename>', methods=['GET'])
 def get_file(filename):
     try:
         return send_from_directory(output_dir, filename, as_attachment=True)
     except FileNotFoundError:
         return jsonify({"error": "File not found"}), 404
-@app.route('/deletefile/<filename>', methods=['GET'])
+@app.route('/getfile1/<filename>', methods=['GET'])
+def get_file(filename):
+    try:
+        return send_from_directory(output_dir, filename, as_attachment=False)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+@app.route('/deletefile/<filename>', methods=['DELETE'])
 def delete_file(filename):
     file_path = os.path.join(output_dir, filename)
     try:
